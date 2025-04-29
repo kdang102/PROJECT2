@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="p-3">
+  <div class="container">
+    <div class="row mt-3">
+      <div class="col mx-auto mb-3">
+        <h2>Edit Expense</h2>
+        <form method="POST">
+          {% csrf_token %}
+          <label for="expense_description">New Description:</label>
+          <input type="text" name="expense_description" id="expense_description" value="{{ expense.description }}">
+
+          <label for="expense_amount">New Amount:</label>
+          <input type="number" name="expense_amount" id="expense_amount" step="0.01" value="{{ expense.amount }}">
+
+          <div class="text-start">
+            <button type="submit" class="btn bg-dark text-white">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="p-3">
+  <div class="container">
+    <div class="row mt-3">
+      <div class="col mx-auto mb-3">
+        <h2>Edit Spending Limit</h2>
+        <form method="POST">
+          {% csrf_token %}
+          <label for="budget_category">New Category:</label>
+          <input type="text" name="budget_category" id="budget_category" value="{{ budget.category }}">
+
+          <label for="budget_limit_amount">New Amount:</label>
+          <input type="number" name="budget_limit_amount" id="budget_limit_amount" step="0.01" value="{{ budget.limit_amount }}">
+
+          <div class="text-start">
+            <button type="submit" class="btn bg-dark text-white">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

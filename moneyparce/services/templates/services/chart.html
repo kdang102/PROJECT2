@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MoneyParce Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .no-data {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            margin: 20px 0;
+        }
+        .chart-container {
+            position: relative;
+            width: 80%;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+
+<h1 style="text-align:center;">MoneyParce Dashboard</h1>
+
+<div class="chart-container">
+    <h2>Spending by Category</h2>
+    <div id="spendingNoData" class="no-data">Loading spending data...</div>
+    <canvas id="spendingChart" width="600" height="400"></canvas>
+
+    <h2>Income Overview</h2>
+    <div id="incomeNoData" class="no-data">Loading income data...</div>
+    <canvas id="incomeChart" width="600" height="400"></canvas>
+</div>
+
+<script>
+function createChart(elementId, noDataElementId, url, label, color) {
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const noDataElement = document.getElementById(noDataElementId);
+            const ctx = document.getElementById(elementId).getContext('2d');
+
+            if (data.labels[0].includes("No data")) {
+                noDataElement.textContent = "No data available. Add some " + label.toLowerCase() + " to see the chart.";
+                return;
+            }
+
+            noDataElement.style.display = 'none';
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: label + ' ($)',
+                        data: data.data,
+                        backgroundColor: color
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error("Error loading graph:", error);
+            document.getElementById(noDataElementId).textContent =
+                "Error loading " + label.toLowerCase() + " data. Please try again later.";
+        });
+}
+
+window.onload = function() {
+    createChart(
+        'spendingChart',
+        'spendingNoData',
+        '/services/api/spending_summary/',
+        'Spending',
+        'rgba(255, 99, 132, 0.6)'
+    );
+
+    createChart(
+        'incomeChart',
+        'incomeNoData',
+        '/services/api/income_summary/',
+        'Income',
+        'rgba(75, 192, 192, 0.6)'
+    );
+};
+</script>
+
+</body>
+</html>

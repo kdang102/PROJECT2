@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<div class="p-3">
+  <div class="container">
+    <div class="row mt-3">
+      <div class="col-md-6 mx-auto mb-3">
+        <h2>About</h2>
+        <hr />
+        <p>
+           MoneyParce is a web application with a goal to help users manage their everyday spending.
+            Using the app, users would be able to: Track their income, Track their spending, Set spending limits for budgeting, and
+            Get tips and tricks on how to reduce spending
+
+        </p>
+        <p>
+          With MoneyParce you will see just how useful, practical, and relatable personal finance is.
+        </p>
+      </div>
+      <br>
+      <br>
+      <div class="col-md-6 mx-auto mb-3">
+        <h3>Tips</h3>
+        <hr />
+        <p>
+          - Check your budget before making any purchases!-<br>
+          - Use the graphs to help visualize your spending!
+        </p>
+      </div>
+      <div class="col-md-6 mx-auto mb-3 text-center">
+        <img src="{% static 'image/about.jpg' %}" class="max-width-100" alt="about" />
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

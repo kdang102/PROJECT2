@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h2>Income Management</h2>
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Add New Income</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="form-group mb-3">
+                            <label for="income_amount">Income Amount ($)</label>
+                            <input type="number" step="0.01" min="0" class="form-control"
+                                   id="income_amount" name="income_amount" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Income</button>
+                    </form>
+                </div>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} mt-3">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">Your Income Report</h4>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h5>Total Income: ${{ total_income }}</h5>
+                        <p>Number of records: {{ incomes.count }}</p>
+                    </div>
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for income in incomes %}
+                            <tr>
+                                <td>{{ income.date_added|date:"Y-m-d" }}</td>
+                                <td>${{ income.amount }}</td>
+                                <td>
+                                    <a href="{% url 'edit_income' income.id %}" class="btn btn-warning btn-sm">
+                                        Edit
+                                    </a>
+                                    <form method="POST" action="{% url 'delete_income' income.id %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Are you sure?')">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3">No income records yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

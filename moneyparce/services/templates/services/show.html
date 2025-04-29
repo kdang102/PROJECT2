@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<div class="p-3">
+  <div class="container">
+    <div class="row mt-3">
+      <!-- Left Column - Description and Button -->
+      <div class="col-md-6 mb-3">
+        <h2>{{ template_data.service.name }}</h2>
+        <hr />
+        <p><b>Description:</b> This is the income service, you type in your income for today and it will be saved for later use.</p>
+          <a href="{% url 'add_income' %}" class="btn btn-primary">
+            Manage Your Income
+          </a>
+          <a href="{% url 'add_expense' %}" class="btn btn-primary">
+            Track Your Spending
+          </a>
+      </div>
+      <div class="col-md-6 mx-auto mb-3 text-center">
+        <img src="{{ template_data.service.image.url }}"
+          class="rounded img-card-400" />
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

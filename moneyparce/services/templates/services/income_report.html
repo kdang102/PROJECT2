@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h2>Your Income Report</h2>
+            <a href="{% url 'add_income' %}" class="btn btn-primary mb-3">
+                Add New Income
+            </a>
+            
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Summary</h4>
+                </div>
+                <div class="card-body">
+                    <h5>Total Income: ${{ total_income }}</h5>
+                    <p>Number of records: {{ incomes.count }}</p>
+                </div>
+            </div>
+            
+            <h4>Income History</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for income in incomes %}
+                    <tr>
+                        <td>{{ income.date_added|date:"Y-m-d" }}</td>
+                        <td>${{ income.amount }}</td>
+                        <td>
+                            <form method="POST" action="{% url 'delete_income' income.id %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm" 
+                                        onclick="return confirm('Are you sure you want to delete this income record?')">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3">No income records found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

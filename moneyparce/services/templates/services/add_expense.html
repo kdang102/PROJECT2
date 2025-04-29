@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h2>Spending Management</h2>
+
+            <!-- Add Expense Form -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Add New Expense</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="form-group mb-3">
+                            <label for="expense_description"> Item: </label>
+                            <textarea name="expense_description" required class="form-control" id="expense_description"></textarea>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="expense_amount">Expense Amount ($)</label>
+                            <input type="number" step="0.01" min="0" class="form-control"
+                                   id="expense_amount" name="expense_amount" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </form>
+                </div>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} mt-3">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Expense Report -->
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">Spending History</h4>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h5>Total Spending: ${{ total_expenses }}</h5>
+                        <p>Number of Records: {{ expenses.count }}</p>
+                    </div>
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for expense in expenses %}
+                            <tr>
+                                <td>{{ expense.description }}</td>
+                                <td>${{ expense.amount }}</td>
+                                <td>{{ expense.date_added|date:"Y-m-d" }}</td>
+                                <td>
+                                    <form method="POST" action="{% url 'delete_expense' expense.id %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Are you sure?')">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form method="POST" action="{% url 'edit_expense' expense.id %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
+                                            Edit
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3">No spending records yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <br>
+
+            <div style="text-align: center; background-color: deepskyblue; border-radius: 50px 20px; padding: 3px; font-weight: bold;">
+                <a href="/services/add-budget/" style="color: white;">Check Budgets</a>
+            </div>
+
+            <br>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

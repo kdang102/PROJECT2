@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+<header class="masthead bg-index text-white text-center
+           py-4">
+  <div class="container d-flex align-items-center flex-column pt-2">
+    <h2>MoneyParce</h2>
+    <p>Your path to financial freedom.</p>
+  </div>
+</header>
+<div class="p-3">
+  <div class="container">
+    <div class="row mt-3">
+      <div class="col mx-auto text-center mb-3">
+        <h4>Welcome to the best finance website on the planet.</h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- testing !! -->
+<div class="p-3">
+  <div class="container">
+    <div class="row mt-3">
+      <div class="col-4 mx-auto text-center mb-3">
+        <div class="homepage-containers">
+          <h6> Total Income: </h6>
+          <p> ${{ total_income }} </p>
+        </div>
+        <p></p>
+        <div class="homepage-containers">
+          <h6> Total Spending: </h6>
+          <p> ${{ total_expenses }} </p>
+        </div>
+      </div>
+
+      <div class="col-8 mx-auto text-center mb-3">
+        <div class="homepage-containers">
+          <p></p>
+          <h4> How Much Money Do You Have Left?  ${{ difference }}</h4>
+          <p> Need to Update Something? Click Below! </p>
+          <!-- i cant get this to work
+          <img src="question.jpg" alt="Description of the image">
+          <br><br>
+          -->
+          <a href="{% url 'services.index' %}" class="btn bg-dark text-white"> Update Here</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
